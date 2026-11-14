@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مواعيدي</title>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#173DAD">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF3F5;--surf:#fff;--ink:#12262E;--mute:#5E727A;--line:#D9E2E6;--brand:#0E5A6B;--onbrand:#fff;--warn:#B3261E;--warnbg:#FCE9E7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1A1F;--surf:#16282F;--ink:#E8F0F2;--mute:#92A8B0;--line:#27404A;--brand:#5CC0D4;--onbrand:#08242B;--warn:#FFB4AB;--warnbg:#3D1F1C}}
+:root[data-theme="dark"]{--bg:#0D1A1F;--surf:#16282F;--ink:#E8F0F2;--mute:#92A8B0;--line:#27404A;--brand:#5CC0D4;--onbrand:#08242B;--warn:#FFB4AB;--warnbg:#3D1F1C}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Tajawal',system-ui,sans-serif;font-size:16px;line-height:1.5}
+.app{max-width:520px;margin:0 auto;min-height:100vh;padding:16px 16px 110px}
+h1{font-size:26px;font-weight:800;margin:4px 0 2px}
+.sub{color:var(--mute);margin:0 0 14px}
+.next{background:var(--brand);color:var(--onbrand);border-radius:20px;padding:16px 18px;margin-bottom:16px}
+.next b{font-size:20px;display:block}
+.next small{opacity:.85;font-size:14px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--surf);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.ev{background:var(--surf);border-radius:16px;margin-bottom:10px;display:flex;overflow:hidden;border:1px solid var(--line);cursor:pointer}
+.ev .bar{width:7px;flex:none}
+.ev .t{padding:12px 6px 12px 14px;min-width:78px;font-weight:700;font-size:15px;color:var(--mute)}
+.ev .t span{display:block;font-weight:400;font-size:12px}
+.ev .b{padding:12px 6px 12px 14px;flex:1}
+.ev .b strong{display:block;font-size:17px}
+.ev .b em{font-style:normal;color:var(--mute);font-size:14px}
+.ev.off{opacity:.5}.ev.off strong{text-decoration:line-through}
+.tag{display:inline-block;font-size:12px;border-radius:8px;padding:1px 8px;margin-inline-start:6px;background:var(--warnbg);color:var(--warn);font-weight:700}
+.empty{text-align:center;color:var(--mute);padding:36px 12px;border:1.5px dashed var(--line);border-radius:16px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px}
+.days button{border:0;background:var(--surf);color:var(--ink);border-radius:12px;padding:8px 0;font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line)}
+.days button[aria-pressed="true"]{background:var(--brand);color:var(--onbrand);border-color:var(--brand)}
+.days button i{display:block;font-style:normal;font-size:11px;opacity:.7}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+.nav div{display:flex;width:100%;max-width:520px}
+.nav button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-size:13px;padding:6px;cursor:pointer;border-radius:12px}
+.nav button[aria-current="true"]{color:var(--brand);font-weight:800}
+.nav button span{display:block;font-size:20px}
+.fab{position:fixed;bottom:calc(78px + env(safe-area-inset-bottom,0px));inset-inline-start:max(16px,calc(50% - 244px));width:56px;height:56px;border-radius:50%;border:0;background:var(--brand);color:var(--onbrand);font-size:30px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:6}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:10}
+.sheet.open{display:flex}
+.panel{background:var(--surf);width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));max-height:90vh;overflow:auto}
+.panel h2{margin:0 0 12px;font-size:20px}
+label{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
+input,select{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.btn{width:100%;margin-top:16px;padding:13px;border:0;border-radius:14px;background:var(--brand);color:var(--onbrand);font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+.btn.alt{background:var(--bg);color:var(--ink);border:1.5px solid var(--line);margin-top:8px}
+.btn.del{background:var(--warnbg);color:var(--warn);margin-top:8px}
+.kid{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;flex:none}
+.sw{display:flex;gap:8px;margin-top:6px}
+.sw button{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.sw button[aria-pressed="true"]{border-color:var(--ink)}
+.sec{margin:22px 0 8px;font-size:17px;font-weight:800}
+.tg{display:flex;justify-content:space-between;align-items:center;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:11px 14px;margin-bottom:8px}
+.tg input{width:22px;height:22px;accent-color:var(--brand)}
+.toast{position:fixed;bottom:150px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:14px;z-index:20;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.top{display:flex;justify-content:space-between;align-items:flex-start}.gear{border:1px solid var(--line);background:var(--surf);border-radius:50%;width:42px;height:42px;font-size:20px;cursor:pointer;flex:none}.det{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.det span{color:var(--mute);width:78px;flex:none;font-size:14px}.det b{font-weight:500}textarea{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}.hd{display:flex;gap:14px;align-items:center;margin:10px 0 6px}.kid{cursor:pointer}button:focus-visible{outline-offset:2px}.ask{background:var(--surf);border:2px solid var(--brand);border-radius:16px;padding:12px 14px;margin-bottom:12px}.bd{background:#C0392B;color:#fff;border-radius:10px;font-size:11px;padding:0 6px;margin-inline-start:4px}.brand{display:flex;gap:6px;align-items:center;font-weight:800;color:var(--brand);font-size:15px;margin-bottom:6px}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<button class="fab" id="fab" aria-label="إضافة موعد">+</button>
+<nav class="nav"><div id="nav"></div></nav>
+<div class="sheet" id="sheet"><div class="panel" id="panel"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+var COLORS=['#E4572E','#2E86AB','#7A5CC9','#2F9E6B','#D98E04','#C2418B'];
+var DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+var DAYS_S=['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+var ORDER=[6,0,1,2,3,4,5];
+var PLACES=['المنزل','السنتر','أونلاين','المدرسة'];
+var TONES={bell:['جرس',[[880,0,.5],[1320,.15,.6]],'sine'],calm:['هادئة',[[523,0,.3],[659,.25,.3],[784,.5,.6]],'sine'],piano:['بيانو',[[392,0,.25],[494,.2,.25],[587,.4,.25],[784,.6,.6]],'triangle'],bird:['عصفور',[[1800,0,.08],[2200,.1,.08],[1800,.2,.08],[2400,.3,.14]],'sine'],alarm:['منبه',[[740,0,.15],[740,.25,.15],[740,.5,.15]],'square'],custom:['من هاتفك',[],'sine']};
+var AC,S,dirty=0,dbDoc=null,tm;
+var CU={};
+function play(k,wid){if(k==='custom'&&CU[wid]){try{var au=new Audio(CU[wid]);au.play();setTimeout(function(){au.pause()},20000)}catch(e){}return}if(k==='custom')k='bell';try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();var T=TONES[k]||TONES.bell,t0=AC.currentTime;T[1].forEach(function(n){var o=AC.createOscillator(),g=AC.createGain();o.type=T[2];o.frequency.value=n[0];g.gain.setValueAtTime(0,t0+n[1]);g.gain.linearRampToValueAtTime(.18,t0+n[1]+.02);g.gain.exponentialRampToValueAtTime(.001,t0+n[1]+n[2]);o.connect(g);g.connect(AC.destination);o.start(t0+n[1]);o.stop(t0+n[1]+n[2]+.05)})}catch(e){}}
+function def(){var d=new Date().getDay();return{kids:[{id:'k1',name:'ياسين',color:COLORS[0],tone:'bell'},{id:'k2',name:'ليلى',color:COLORS[1],tone:'piano'}],
+ ev:[{id:'e1',who:'k1',title:'رياضيات',teacher:'أ. محمود',place:'السنتر',day:d,time:'16:00',notes:'إحضار كتاب التمارين',off:[]},{id:'e2',who:'k2',title:'لغة إنجليزية',teacher:'مس سارة',place:'أونلاين',day:d,time:'16:30',notes:'',off:[]},{id:'e3',who:'k1',title:'علوم',teacher:'أ. هالة',place:'المنزل',day:(d+1)%7,time:'17:00',notes:'',off:[]},{id:'e4',who:'me',title:'موعد طبيب',teacher:'',place:'العيادة',day:(d+2)%7,time:'11:00',notes:'',off:[]}],
+ set:{day:true,hour:true,half:true,morning:true},lead:30,alerts:[],meTone:'bell',view:'today',day:d,filter:'all',kid:null}}
+function norm(x){var D=def();x.set=x.set||D.set;x.lead=x.lead||30;x.alerts=x.alerts||[];x.meTone=x.meTone||'bell';x.kids.forEach(function(k){k.tone=k.tone||'bell'});x.ev.forEach(function(e){e.notes=e.notes||'';e.off=e.off||[]});return x}
+try{S=norm(JSON.parse(localStorage.getItem('mw2')||localStorage.getItem('mw1')))}catch(e){S=null}
+if(!S)S=def();
+function save(){dirty=1;try{localStorage.setItem('mw2',JSON.stringify(S))}catch(e){}clearTimeout(tm);tm=setTimeout(function(){if(dbDoc)dbDoc.set({s:JSON.stringify(S)}).catch(function(){})},500)}
+try{if(window.claude&&claude.use){claude.use('user').then(function(u){return u?u.id():null}).then(function(id){return claude.use('db').then(function(db){if(!db||!id)return;dbDoc=db.doc('data/users/'+id+'/state');return dbDoc.get().then(function(sn){if(sn.exists&&!dirty){S=norm(JSON.parse(sn.data().s));render()}else if(!sn.exists)dbDoc.set({s:JSON.stringify(S)})})})}).catch(function(){})}}catch(e){}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function who(id){if(id==='me')return{id:'me',name:'أنا',color:'#0E5A6B',tone:S.meTone};return S.kids.filter(function(k){return k.id===id})[0]||{name:'؟',color:'#888',tone:'bell'}}
+function dstr(d){var z=new Date(d.getTime()-d.getTimezoneOffset()*6e4);return z.toISOString().slice(0,10)}
+function dateOfDay(day){var n=new Date(),diff=(day-n.getDay()+7)%7;n.setDate(n.getDate()+diff);return dstr(n)}
+function mins(t){var p=t.split(':');return +p[0]*60+ +p[1]}
+function fmt(t){var p=t.split(':'),h=+p[0]%12||12;return h+':'+p[1]}
+function ampm(t){return +t.split(':')[0]>=12?'مساءً':'صباحًا'}
+function isOff(e){return e.off.indexOf(dateOfDay(e.day))>=0}
+function clash(e){return !isOff(e)&&S.ev.some(function(o){if(o.id===e.id||o.day!==e.day||isOff(o)||Math.abs(mins(o.time)-mins(e.time))>=60)return false;if(o.who===e.who)return true;if(o.who==='me'||e.who==='me')return false;return o.place===e.place&&(e.place==='المنزل'||e.place==='أونلاين')})}
+function evHTML(e){var w=who(e.who),off=isOff(e);
+ return '<div class="ev'+(off?' off':'')+'" data-id="'+e.id+'" tabindex="0" role="button"><div class="bar" style="background:'+w.color+'"></div><div class="t">'+fmt(e.time)+'<span>'+ampm(e.time)+'</span></div><div class="b"><strong>'+esc(e.title)+(clash(e)?'<span class="tag">تعارض</span>':'')+(e.moved?'<span class="tag" style="background:var(--bg);color:var(--brand)">مؤجل</span>':'')+(e.by==='child'&&S.view!=='child'?'<span class="tag" style="background:var(--bg);color:var(--brand)">أضافه الطفل</span>':'')+(off?'<span class="tag" style="background:var(--bg);color:var(--mute)">ملغى اليوم</span>':'')+'</strong><em>'+esc(w.name)+(e.teacher?' · '+esc(e.teacher):'')+' · '+esc(e.place)+'</em></div></div>'}
+function list(day,f){var ds=dateOfDay(day),a=[];S.ev.forEach(function(e){if(f!=='all'&&e.who!==f)return;if(e.post&&e.post.date===ds)a.push(Object.assign({},e,{time:e.post.time,off:[],moved:1,day:day}));else if(e.day===day&&!(e.post&&e.post.from===ds))a.push(e)});a.sort(function(x,y){return mins(x.time)-mins(y.time)});return a}
+var LOGO='<svg width="28" height="28" viewBox="0 0 1024 1024" aria-hidden="true"><rect width="1024" height="1024" rx="230" fill="#0E5A6B"/><g transform="translate(512 512) scale(0.92) translate(-512 -512)"><g transform="translate(0,-30)"><circle cx="215" cy="330" r="72" fill="#7CD4F2"/><rect x="125" y="420" width="180" height="380" rx="76" fill="#7CD4F2"/><circle cx="809" cy="330" r="72" fill="#FF8A5B"/><path d="M719 450Q719 420 749 420H869Q899 420 899 450L964 800H690Z" fill="#FF8A5B"/><circle cx="512" cy="400" r="156" fill="#fff"/><circle cx="512" cy="400" r="156" fill="none" stroke="#FFD166" stroke-width="18"/><path d="M512 400V305M512 400L582 436" stroke="#0E5A6B" stroke-width="24" stroke-linecap="round"/><circle cx="512" cy="400" r="16" fill="#0E5A6B"/><circle cx="512" cy="272" r="9" fill="#0E5A6B"/><circle cx="512" cy="528" r="9" fill="#0E5A6B"/><circle cx="384" cy="400" r="9" fill="#0E5A6B"/><circle cx="640" cy="400" r="9" fill="#0E5A6B"/><circle cx="424" cy="648" r="54" fill="#FFD166"/><rect x="360" y="712" width="128" height="140" rx="54" fill="#FFD166"/><circle cx="600" cy="648" r="54" fill="#fff"/><rect x="536" y="712" width="128" height="140" rx="54" fill="#fff"/></g></g></svg>';
+function addAlert(o){o.id='a'+Date.now()+Math.random().toString(36).slice(2,5);o.at=Date.now();S.alerts.unshift(o);if(S.alerts.length>50)S.alerts.length=50}
+function unread(){return S.alerts.filter(function(a){return !a.done}).length}
+function askCards(){var n=new Date(),nm=n.getHours()*60+n.getMinutes(),td=dstr(n),h='';list(n.getDay(),S.kid).forEach(function(e){var d=nm-mins(e.time);if(d>=45&&d<300&&e.fin!==td&&!isOff(e))h+='<div class="ask"><b>هل انتهى درس '+esc(e.title)+'؟</b><div class="chips" style="margin:8px 0 0"><button class="chip" data-fin="'+e.id+'">انتهى</button><button class="chip" data-post="'+e.id+'">تأجيل</button><button class="chip" data-skip="'+e.id+'">لم يتم</button></div></div>'});return h}
+function alertsHTML(){var h='',tdy=dstr(new Date()),tmr=dstr(new Date(Date.now()+864e5));if(!S.alerts.length)return '<div class="empty">لا توجد تنبيهات بعد.<br>تظهر هنا إجراءات الأبناء بعد دروسهم.</div>';
+ S.alerts.forEach(function(a){var w=who(a.kid),tt=new Date(a.at).toLocaleTimeString('ar-EG',{hour:'numeric',minute:'2-digit'}),msg,b='',st='';
+  if(a.type==='done')msg=esc(w.name)+' أنهى درس '+esc(a.title);
+  if(a.type==='skip')msg='لم يتم درس '+esc(a.title)+' اليوم ('+esc(w.name)+')';
+  if(a.type==='postpone')msg=esc(w.name)+' يطلب تأجيل '+esc(a.title)+' إلى '+(a.toDate===tdy?'اليوم':a.toDate===tmr?'غدًا':a.toDate)+' '+fmt(a.toTime)+' '+ampm(a.toTime);
+  if(a.type==='added')msg=esc(w.name)+' أضاف موعدًا: '+esc(a.title)+' ('+esc(a.days)+')';
+  if(!a.done){if(a.type==='postpone')b='<button class="chip" data-aa="ok" data-aid="'+a.id+'">موافق</button><button class="chip" data-aa="no" data-aid="'+a.id+'">رفض</button>';
+   else if(a.type==='added')b='<button class="chip" data-aa="edit" data-aid="'+a.id+'">تعديل</button><button class="chip" data-aa="del" data-aid="'+a.id+'">حذف</button><button class="chip" data-aa="seen" data-aid="'+a.id+'">تم</button>';
+   else b='<button class="chip" data-aa="seen" data-aid="'+a.id+'">تم</button>'}
+  else st=a.status==='ok'?' · تمت الموافقة':a.status==='no'?' · رُفض':a.status==='del'?' · حُذف':'';
+  h+='<div class="e" style="opacity:'+(a.done?.65:1)+'"><i style="background:'+w.color+'"></i><div style="flex:1"><b>'+msg+'</b><span>'+tt+st+'</span>'+(b?'<div class="chips" style="padding:10px 0 0;margin:0">'+b+'</div>':'')+'</div></div>'});return h}
+function chips(){var h='<div class="chips"><button class="chip" data-f="all" aria-pressed="'+(S.filter==='all')+'">الكل</button><button class="chip" data-f="me" aria-pressed="'+(S.filter==='me')+'"><i class="dot" style="background:#0E5A6B"></i>أنا</button>';
+ S.kids.forEach(function(k){h+='<button class="chip" data-f="'+k.id+'" aria-pressed="'+(S.filter===k.id)+'"><i class="dot" style="background:'+k.color+'"></i>'+esc(k.name)+'</button>'});return h+'</div>'}
+function nextBanner(fk){var now=new Date(),nm=now.getHours()*60+now.getMinutes();
+ var a=list(now.getDay(),fk||'all').filter(function(e){return mins(e.time)>nm&&!isOff(e)});
+ if(!a.length)return '<div class="next"><b>لا مواعيد قادمة اليوم</b><small>استمتعوا بباقي اليوم</small></div>';
+ var e=a[0],d=mins(e.time)-nm,w=who(e.who),far=e.place!=='أونلاين'&&e.place!=='المنزل'?' · اخرج قبلها بـ '+S.lead+' دقيقة':'';
+ var txt=d>=60?Math.floor(d/60)+' ساعة'+(d%60?' و'+d%60+' دقيقة':''):d+' دقيقة';
+ return '<div class="next"><small>الموعد القادم</small><b>'+esc(e.title)+' · '+esc(w.name)+'</b><small>بعد '+txt+far+'</small></div>'}
+function topBar(t,sub){return '<div class="top"><div><div class="brand">'+LOGO+'مواعيدي</div><h1>'+t+'</h1><p class="sub">'+sub+'</p></div><button class="gear" data-v="settings" aria-label="الإعدادات">⚙️</button></div>'}
+function toneRow(id,cur){var h='<div class="chips">';Object.keys(TONES).forEach(function(k){if(k==='custom')return;h+='<button class="chip" data-tone="'+k+'" data-tw="'+id+'" aria-pressed="'+(cur===k)+'">🔔 '+TONES[k][0]+'</button>'});return h+'<label class="chip" aria-pressed="'+(cur==='custom')+'">📱 '+(cur==='custom'&&S.cn&&S.cn[id]?esc(S.cn[id]):'من هاتفك')+'<input type="file" accept="audio/*" data-file="'+id+'" hidden></label></div>'}
+function render(){var h='',v=S.view,t=new Date().getDay();
+ if(v==='today'){h+=topBar('اليوم',DAYS[t]+' '+new Date().toLocaleDateString('ar-EG',{day:'numeric',month:'long'}))+nextBanner()+chips();
+  var a=list(t,S.filter);h+=a.length?a.map(evHTML).join(''):'<div class="empty">لا توجد مواعيد اليوم.<br>اضغط + لإضافة موعد أو درس.</div>'}
+ else if(v==='week'){h+=topBar('الأسبوع','اختر اليوم لعرض مواعيده')+'<div class="days">';
+  ORDER.forEach(function(d){h+='<button data-d="'+d+'" aria-pressed="'+(S.day===d)+'">'+DAYS_S[d]+'<i>'+list(d,S.filter).length+'</i></button>'});
+  h+='</div>'+chips();var b=list(S.day,S.filter);h+=b.length?b.map(evHTML).join(''):'<div class="empty">لا شيء يوم '+DAYS[S.day]+'.</div>'}
+ else if(v==='kids'){h+=topBar('العائلة','اضغط على الابن لفتح حسابه');
+  S.kids.forEach(function(k){var n=S.ev.filter(function(e){return e.who===k.id}).length;h+='<div class="kid" data-kid="'+k.id+'" role="button" tabindex="0"><div class="av" style="background:'+k.color+'">'+esc(k.name.charAt(0))+'</div><div style="flex:1"><b>'+esc(k.name)+'</b><div class="sub" style="margin:0">'+n+' مواعيد أسبوعيًا · نغمة '+TONES[k.tone][0]+'</div></div><button class="chip" data-child="'+k.id+'">📱 وضع الطفل</button></div>'});
+  h+='<button class="btn alt" id="addKid">+ إضافة ابن أو ابنة</button>'}
+ else if(v==='kid'){var k=S.kids.filter(function(x){return x.id===S.kid})[0];if(!k){S.view='kids';return render()}
+  h+='<button class="chip" data-v="kids">رجوع للعائلة</button><div class="hd"><div class="av" style="background:'+k.color+';width:56px;height:56px;font-size:24px">'+esc(k.name.charAt(0))+'</div><div><h1 style="margin:0">'+esc(k.name)+'</h1><p class="sub" style="margin:0">جدول '+esc(k.name)+' الأسبوعي</p></div></div>';
+  h+='<button class="btn" data-child="'+k.id+'">📱 فتح وضع الطفل</button><p class="sub" style="margin:6px 0 0">يعرض جدول '+esc(k.name)+' فقط بدون تعديل، ويُقفل برمز ولي الأمر.</p><div class="sec">نغمة التنبيه</div>'+toneRow(k.id,k.tone)+'<button class="btn" data-addfor="'+k.id+'">+ موعد جديد لـ '+esc(k.name)+'</button>';
+  var any=0;ORDER.forEach(function(d){var a=list(d,k.id);if(a.length){any=1;h+='<div class="sec">'+DAYS[d]+'</div>'+a.map(evHTML).join('')}});
+  if(!any)h+='<div class="empty" style="margin-top:14px">لا توجد دروس بعد.</div>';
+  h+='<button class="btn alt" data-editkid="'+k.id+'">تعديل الاسم واللون</button><button class="btn del" data-rk="'+k.id+'">حذف '+esc(k.name)+' وكل مواعيده</button>'}
+ else if(v==='child'){var ck=who(S.kid);h+='<div class="hd"><div class="av" style="background:'+ck.color+';width:56px;height:56px;font-size:24px">'+esc(ck.name.charAt(0))+'</div><div style="flex:1"><h1 style="margin:0">أهلاً يا '+esc(ck.name)+'</h1><p class="sub" style="margin:0">'+DAYS[t]+'</p></div><button class="chip" data-exit>🔒 خروج</button></div>'+nextBanner(S.kid)+askCards()+'<div class="sec">دروس اليوم</div>';
+  var ta=list(t,S.kid);h+=ta.length?ta.map(evHTML).join(''):'<div class="empty">لا دروس اليوم 🎉</div>';
+  ORDER.forEach(function(d){if(d===t)return;var a=list(d,S.kid);if(a.length)h+='<div class="sec">'+DAYS[d]+'</div>'+a.map(evHTML).join('')})}
+ else if(v==='alerts'){h+=topBar('التنبيهات','ما فعله الأبناء')+alertsHTML()}
+ else if(v==='settings'){h+='<button class="chip" data-v="today">رجوع</button><h1 style="margin-top:12px">الإعدادات</h1><div class="sec">التنبيهات</div>';
+  [['day','قبل الموعد بيوم'],['hour','قبل الموعد بساعة'],['half','وقت الخروج قبل الموعد'],['morning','ملخص صباحي الساعة 7']].forEach(function(x){h+='<label class="tg" style="color:var(--ink);margin:0 0 8px">'+x[1]+'<input type="checkbox" data-s="'+x[0]+'"'+(S.set[x[0]]?' checked':'')+'></label>'});
+  h+='<label>مدة الخروج قبل الموعد</label><select data-lead>'+[15,30,45,60].map(function(m){return '<option value="'+m+'"'+(S.lead===m?' selected':'')+'>'+m+' دقيقة</option>'}).join('')+'</select>';
+  h+='<div class="sec">رمز ولي الأمر</div><label>4 أرقام لقفل وضع الطفل</label><input id="pin" inputmode="numeric" maxlength="4" value="'+(S.pin||'')+'">';h+='<div class="sec">نغمة تنبيهاتي</div>'+toneRow('me',S.meTone)+'<p class="sub">نغمة كل طفل تختارها من صفحته في «العائلة».</p><button class="btn alt" id="test">تجربة تنبيه الآن</button><button class="btn del" id="reset">إعادة البيانات التجريبية</button>'}
+ $('app').innerHTML=h;
+ var nv=v==='kid'?'kids':v;
+ $('nav').innerHTML=[['today','🏠','اليوم'],['week','🗓️','الأسبوع'],['kids','👨‍👩‍👧','العائلة'],['alerts','🔔','التنبيهات']].map(function(x){return '<button data-v="'+x[0]+'"'+(nv===x[0]?' aria-current="true"':'')+'><span>'+x[1]+'</span>'+x[2]+(x[0]==='alerts'&&unread()?'<b class="bd">'+unread()+'</b>':'')+'</button>'}).join('');
+ $('fab').style.display=(v==='kids'||v==='settings'||v==='alerts')?'none':'block';document.querySelector('.nav').style.display=v==='child'?'none':'flex'}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200)}
+function open(h){$('panel').innerHTML=h;$('sheet').classList.add('open')}
+function close(){$('sheet').classList.remove('open')}
+function evForm(e,w0,ch){var c=e||{who:w0||'me',title:'',teacher:'',place:'المنزل',time:'16:00',notes:''};
+ var o=(ch?[w0]:['me'].concat(S.kids.map(function(k){return k.id}))).map(function(id){return '<option value="'+id+'"'+(id===c.who?' selected':'')+'>'+esc(who(id).name)+'</option>'}).join('');
+ var d=ORDER.map(function(x){return '<button type="button" class="chip" data-pd="'+x+'" aria-pressed="'+(!!e&&x===e.day)+'">'+DAYS[x]+'</button>'}).join('');
+ var pl=PLACES.indexOf(c.place)<0?PLACES.concat([c.place]):PLACES;
+ open('<h2>'+(e?'تعديل الموعد':'موعد أو درس جديد')+'</h2><label>لمن؟</label><select id="f_who">'+o+'</select><label>العنوان / المادة</label><input id="f_title" value="'+esc(c.title)+'" placeholder="مثال: لغة عربية"><label>المعلم (اختياري)</label><input id="f_teacher" value="'+esc(c.teacher)+'"><label>الأيام (اختر يومًا أو أكثر)</label><div class="chips" style="flex-wrap:wrap">'+d+'</div><label>الوقت</label><input type="time" id="f_time" value="'+c.time+'"><label>المكان</label><select id="f_place">'+pl.map(function(p){return '<option'+(p===c.place?' selected':'')+'>'+esc(p)+'</option>'}).join('')+'</select><label>ملاحظات (اختياري)</label><textarea id="f_notes" rows="2" placeholder="واجب، أغراض مطلوبة…">'+esc(c.notes)+'</textarea><button class="btn" id="saveEv" data-id="'+(e?e.id:'')+'">'+(e?'حفظ التعديل':'حفظ ويتكرر أسبوعيًا')+'</button><button class="btn alt" data-close>إلغاء</button>')}
+function kidForm(k){var c=k?k.color:COLORS[S.kids.length%COLORS.length];
+ open('<h2>'+(k?'تعديل الحساب':'إضافة ابن أو ابنة')+'</h2><label>الاسم</label><input id="k_name" value="'+(k?esc(k.name):'')+'"><label>اللون</label><div class="sw" id="sw">'+COLORS.map(function(x){return '<button data-c="'+x+'" style="background:'+x+'" aria-label="لون" aria-pressed="'+(x===c)+'"></button>'}).join('')+'</div><button class="btn" id="saveKid" data-id="'+(k?k.id:'')+'">حفظ</button><button class="btn alt" data-close>إلغاء</button>')}
+function det(l,v){return '<div class="det"><span>'+l+'</span><b>'+v+'</b></div>'}
+function evMenu(id){var e=S.ev.filter(function(x){return x.id===id})[0];if(!e)return;var w=who(e.who),off=isOff(e);
+ open('<h2>'+esc(e.title)+'</h2>'+det('الشخص','<i class="dot" style="background:'+w.color+'"></i> '+esc(w.name))+det('الموعد','كل '+DAYS[e.day]+' · '+fmt(e.time)+' '+ampm(e.time))+det('المكان',esc(e.place))+(e.teacher?det('المعلم',esc(e.teacher)):'')+(e.notes?det('ملاحظات',esc(e.notes)):'')+det('التنبيه','نغمة '+TONES[w.tone][0]+' · قبل '+S.lead+' دقيقة')+(off?det('الحالة','ملغى لهذا الأسبوع'):'')
+ +'<button class="btn" data-act="edit" data-id="'+id+'">تعديل</button><button class="btn alt" data-act="late" data-id="'+id+'">إرسال «سنتأخر 10 دقائق» عبر واتساب</button><button class="btn alt" data-act="off" data-id="'+id+'">'+(off?'إعادة الموعد لهذه المرة':'استئذان: إلغاء لهذه المرة فقط')+'</button><button class="btn del" data-act="del" data-id="'+id+'">حذف الموعد</button><button class="btn alt" data-close>إغلاق</button>')}
+function saveEvent(btn){var ti=$('f_title').value.trim();if(!ti){toast('اكتب عنوان الموعد');return}
+ var sel=document.querySelectorAll('.panel [data-pd][aria-pressed="true"]');if(!sel.length){toast('اختر يومًا واحدًا على الأقل');return}
+ var base={by:S.view==='child'?'child':undefined,who:$('f_who').value,title:ti,teacher:$('f_teacher').value.trim(),place:$('f_place').value,time:$('f_time').value||'16:00',notes:$('f_notes').value.trim()};
+ var id=btn.dataset.id,e0=id?S.ev.filter(function(x){return x.id===id})[0]:null,n=0,dn=[],ids=[],first=+sel[0].dataset.pd;
+ Array.prototype.forEach.call(sel,function(b,i){var dd=+b.dataset.pd;
+  if(e0&&i===0){var ch=e0.day!==dd;Object.assign(e0,base,{day:dd});if(ch)e0.off=[]}
+  else{var ne=Object.assign({id:'e'+Date.now()+'_'+i,day:dd,off:[]},base);S.ev.push(ne);ids.push(ne.id)}n++;dn.push(DAYS[dd])});
+ if(S.view==='child'){addAlert({kid:base.who,type:'added',title:ti,days:dn.join('، '),ids:ids})}else{S.filter='all';if(base.who!=='me'){S.view='kid';S.kid=base.who}else{S.view='week';S.day=first}}
+ save();close();render();window.scrollTo(0,0);toast(S.view==='child'?'أُضيف الموعد وأُرسل لولي الأمر':e0?'تم حفظ التعديل':'تم الحفظ في حساب '+who(base.who).name+' — '+n+' أيام أسبوعيًا')}
+document.addEventListener('click',function(ev){var t=ev.target,el;
+ if(AC&&AC.state==='suspended')AC.resume();
+ if(el=t.closest('[data-v]')){S.view=el.dataset.v;save();render();return}
+ if(el=t.closest('[data-f]')){S.filter=el.dataset.f;save();render();return}
+ if(el=t.closest('[data-d]')){S.day=+el.dataset.d;save();render();return}
+ if(el=t.closest('[data-post]')){var pid=el.dataset.post;open('<h2>أجّل الدرس إلى</h2><button class="btn" data-pp="60" data-id="'+pid+'">بعد ساعة</button><button class="btn alt" data-pp="120" data-id="'+pid+'">بعد ساعتين</button><button class="btn alt" data-pp="tom" data-id="'+pid+'">غدًا في نفس الوقت</button><button class="btn alt" data-close>رجوع</button>');return}
+ if(el=t.closest('[data-pp]')){var pe2=S.ev.filter(function(x){return x.id===el.dataset.id})[0],n2=new Date(),td2=dstr(n2),toD,toT;if(!pe2)return;
+  if(el.dataset.pp==='tom'){toD=dstr(new Date(n2.getTime()+864e5));toT=pe2.time}else{var nt=new Date(n2.getTime()+ +el.dataset.pp*6e4);toD=dstr(nt);toT=('0'+nt.getHours()).slice(-2)+':'+('0'+nt.getMinutes()).slice(-2)}
+  addAlert({kid:pe2.who,type:'postpone',evId:pe2.id,title:pe2.title,from:td2,toDate:toD,toTime:toT});pe2.fin=td2;save();close();render();toast('أُرسل طلب التأجيل لولي الأمر');return}
+ if(el=t.closest('[data-fin],[data-skip]')){var fe=S.ev.filter(function(x){return x.id===(el.dataset.fin||el.dataset.skip)})[0],isF=!!el.dataset.fin;if(fe){addAlert({kid:fe.who,type:isF?'done':'skip',evId:fe.id,title:fe.title});fe.fin=dstr(new Date());save();close();render();toast(isF?'أُرسل لولي الأمر: انتهى الدرس':'أُرسل لولي الأمر: لم يتم الدرس')}return}
+ if(el=t.closest('[data-aa]')){var al=S.alerts.filter(function(x){return x.id===el.dataset.aid})[0],aa=el.dataset.aa;if(al){
+  if(aa==='ok'){var pe=S.ev.filter(function(x){return x.id===al.evId})[0];if(pe){if(pe.off.indexOf(al.from)<0)pe.off.push(al.from);pe.post={date:al.toDate,time:al.toTime,from:al.from}}al.status='ok';al.done=1;toast('تمت الموافقة وتغيّر الموعد')}
+  else if(aa==='no'){al.status='no';al.done=1}
+  else if(aa==='seen'){al.done=1}
+  else if(aa==='del'){S.ev=S.ev.filter(function(x){return (al.ids||[]).indexOf(x.id)<0});al.done=1;al.status='del';toast('تم حذف الموعد')}
+  else if(aa==='edit'){var ee=S.ev.filter(function(x){return x.id===(al.ids||[])[0]})[0];if(ee){al.done=1;save();evForm(ee);return}}
+  save();render()}return}
+ if(el=t.closest('[data-child]')){S.view='child';S.kid=el.dataset.child;save();render();window.scrollTo(0,0);return}
+ if(t.closest('[data-exit]')){if(!S.pin){S.view='kid';save();render();return}open('<h2>رمز ولي الأمر</h2><input id="pinIn" type="password" inputmode="numeric" maxlength="4" placeholder="••••"><button class="btn" id="pinOk">فتح</button><button class="btn alt" data-close>إلغاء</button>');return}
+ if(t.closest('#pinOk')){if($('pinIn').value===S.pin){close();S.view='kid';save();render()}else toast('الرمز غير صحيح');return}
+ if(el=t.closest('[data-kid]')){S.view='kid';S.kid=el.dataset.kid;render();window.scrollTo(0,0);return}
+ if(el=t.closest('[data-tone]')){var w=el.dataset.tw,k2=el.dataset.tone;if(w==='me')S.meTone=k2;else who(w).tone=k2;play(k2,w);save();render();return}
+ if(el=t.closest('[data-rk]')){var rid=el.dataset.rk;S.kids=S.kids.filter(function(k){return k.id!==rid});S.ev=S.ev.filter(function(e){return e.who!==rid});S.view='kids';S.filter='all';save();render();return}
+ if(el=t.closest('[data-addfor]')){evForm(null,el.dataset.addfor);return}
+ if(el=t.closest('[data-editkid]')){kidForm(who(el.dataset.editkid));return}
+ if(el=t.closest('[data-pd]')){el.setAttribute('aria-pressed',el.getAttribute('aria-pressed')!=='true');return}
+ if(t.closest('#fab')){evForm(null,S.view==='kid'||S.view==='child'?S.kid:null,S.view==='child');return}
+ if(t.closest('#addKid')){kidForm(null);return}
+ if(t.closest('[data-close]')||t===$('sheet')){close();return}
+ if(el=t.closest('#sw button')){document.querySelectorAll('#sw button').forEach(function(b){b.setAttribute('aria-pressed',b===el)});return}
+ if(el=t.closest('#saveKid')){var nm=$('k_name').value.trim();if(!nm){toast('اكتب الاسم أولًا');return}
+  var sc=document.querySelector('#sw [aria-pressed="true"]'),col=sc?sc.dataset.c:COLORS[0];
+  if(el.dataset.id){var kk=who(el.dataset.id);kk.name=nm;kk.color=col}else{var nk={id:'k'+Date.now(),name:nm,color:col,tone:'bell'};S.kids.push(nk);S.view='kid';S.kid=nk.id}
+  save();close();render();toast('تم الحفظ');return}
+ if(el=t.closest('#saveEv')){saveEvent(el);return}
+ if(t.closest('#test')){play(S.meTone,'me');toast('هكذا يبدو التنبيه');return}
+ if(t.closest('#reset')){S=def();save();render();toast('تمت الإعادة');return}
+ if(el=t.closest('.ev')){evMenu(el.dataset.id);if(S.view==='child'){document.querySelectorAll('.panel [data-act]').forEach(function(b){b.style.display='none'});var ce=S.ev.filter(function(x){return x.id===el.dataset.id})[0];if(ce&&ce.day===new Date().getDay()&&!isOff(ce))document.querySelector('.panel [data-close]').insertAdjacentHTML('beforebegin','<button class="btn" data-fin="'+ce.id+'">انتهى الدرس</button><button class="btn alt" data-post="'+ce.id+'">تأجيل الدرس</button><button class="btn alt" data-skip="'+ce.id+'">لم يتم الدرس اليوم</button>')}return}
+ if(el=t.closest('[data-act]')){var e2=S.ev.filter(function(x){return x.id===el.dataset.id})[0],ac=el.dataset.act;
+  if(ac==='edit'){evForm(e2);return}
+  if(ac==='del'){S.ev=S.ev.filter(function(x){return x.id!==e2.id});toast('تم حذف الموعد')}
+  if(ac==='off'){var ds=dateOfDay(e2.day),i=e2.off.indexOf(ds);if(i<0){e2.off.push(ds);toast('أُلغي لهذه المرة فقط')}else{e2.off.splice(i,1);toast('أُعيد الموعد')}}
+  if(ac==='late'){window.open('https://wa.me/?text='+encodeURIComponent('السلام عليكم، سنتأخر 10 دقائق عن موعد '+e2.title+' بإذن الله'),'_blank')}
+  save();close();render()}});
+document.addEventListener('change',function(ev){var t=ev.target;if(t.dataset.file){pickTone(t);return}if(t.dataset.s){S.set[t.dataset.s]=t.checked;save()}if(t.hasAttribute('data-lead')){S.lead=+t.value;save()}if(t.id==='pin'){S.pin=t.value.replace(/\D/g,'').slice(0,4);save();toast('تم حفظ الرمز')}});
+document.addEventListener('keydown',function(ev){var c=ev.target.classList;if((ev.key==='Enter'||ev.key===' ')&&(c.contains('ev')||ev.target.dataset.kid)){ev.preventDefault();ev.target.click()}});
+function idb(mode,fn){return new Promise(function(res,rej){var r=indexedDB.open('mw_tones',1);r.onupgradeneeded=function(){r.result.createObjectStore('t')};r.onerror=function(){rej()};r.onsuccess=function(){var tx=r.result.transaction('t',mode),q=fn(tx.objectStore('t'));tx.oncomplete=function(){res(q&&q.result)};tx.onerror=function(){rej()}}})}
+function pickTone(inp){var f=inp.files[0],id=inp.dataset.file;if(!f)return;if(f.size>5*1024*1024){toast('الملف كبير، اختر نغمة أقل من 5 ميجا');return}
+ if(CU[id])URL.revokeObjectURL(CU[id]);CU[id]=URL.createObjectURL(f);S.cn=S.cn||{};S.cn[id]=f.name.replace(/\.[^.]+$/,'');
+ if(id==='me')S.meTone='custom';else who(id).tone='custom';save();render();play('custom',id);toast('تم اختيار النغمة');
+ idb('readwrite',function(st){return st.put(f,id)}).catch(function(){toast('لم تُحفظ النغمة على الجهاز، وستعمل حتى إغلاق الصفحة')})}
+function loadTones(){['me'].concat(S.kids.map(function(k){return k.id})).forEach(function(id){if(who(id).tone!=='custom'||CU[id])return;idb('readonly',function(st){return st.get(id)}).then(function(f){if(f)CU[id]=URL.createObjectURL(f)}).catch(function(){})})}
+var fired={};
+function tick(){var n=new Date(),nm=n.getHours()*60+n.getMinutes(),td=dstr(n),tom=(n.getDay()+1)%7;
+ S.ev.forEach(function(e){var m=mins(e.time),w=who(e.who);
+  function go(k,lab,ok){var key=e.id+td+k;if(ok&&!fired[key]){fired[key]=1;play(w.tone,w.id);toast('🔔 '+e.title+' ('+w.name+') — '+lab)}}
+  if(e.day===n.getDay()&&!isOff(e)){if(S.set.hour)go('h','بعد ساعة',m-60===nm);if(S.set.half)go('l','اخرج الآن',m-S.lead===nm)}
+  if(S.set.day&&e.day===tom&&m===nm)go('d','غدًا في هذا الوقت',true)})}
+setInterval(tick,15000);
+render();loadTones();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js', { scope: './' }).catch(function (err) { console.warn('Service worker registration failed:', err); });
+  });
+}
+</script>
+</body>
+</html>
